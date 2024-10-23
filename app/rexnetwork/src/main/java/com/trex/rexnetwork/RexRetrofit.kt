@@ -3,6 +3,7 @@ package com.trex.rexnetwork
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.trex.rexnetwork.data.NewDevice
 import com.trex.rexnetwork.Constants.BASE_URL
 import com.trex.rexnetwork.data.ActionMessageDTO
 import retrofit2.Response
@@ -23,10 +24,10 @@ interface RexKtorServer {
 //        @Body body: SendMessageDto,
 //    ): Response<Unit>
 //
-//    @POST("/regdevice")
-//    suspend fun registerNewDevice(
-//        @Body body: NewDevice,
-//    ): Response<Unit>
+    @POST("/regdevice")
+    suspend fun registerNewDevice(
+    @Body body: NewDevice,
+    ): Response<Unit>
 }
 
 object RetrofitClient {

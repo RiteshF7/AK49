@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import com.trex.rexnetwork.data.ActionMessageDTO
-import com.trex.rexnetwork.data.ActionMessageDTOFactory
+import com.trex.rexnetwork.data.ActionMessageDTOMapper
 import com.trex.rexnetwork.domain.repositories.SendActionMessageRepository
 
 class PayloadReceiver : BroadcastReceiver() {
@@ -17,16 +17,24 @@ class PayloadReceiver : BroadcastReceiver() {
             logErrorMessage("message not found in payload!")
             return
         }
-        val actionMessageDTO = ActionMessageDTOFactory.fromJsonToDTO(actionMessageString)
+        val actionMessageDTO = ActionMessageDTOMapper.fromJsonToDTO(actionMessageString)
 
         if (actionMessageDTO == null) {
             logErrorMessage("unable to cast from string to dto using gson!")
             return
         }
 
-        Log.i("", "onReceive: ${actionMessageDTO.actions}")
+        Log.i("", "onReceive: ${actionMessageDTO.action}")
 
         //try to send back to shop
+        //make this receiver in both apps
+        //send from shop app suing sdk
+        // receive from client app
+        // send back data to shop using sdk
+        // receive in shop app
+        //make actionExecuters for shop and client app and perform action needed  !!
+        // ypou are doing good dont take too much stress on yourself
+        // everything will work out just keed trying and beleive in yourself
         val shopFcmDto =
             SendActionMessageRepository().sendActionMessage(actionMessageDTO)
 

@@ -1,3 +1,5 @@
+package com.trex.rexnetwork.domain.firebasecore
+
 // ForegroundService.kt
 import android.app.AlarmManager
 import android.app.Notification

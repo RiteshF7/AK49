@@ -1,4 +1,4 @@
-package com.plcoding.data
+package com.trex.rexnetwork.data
 
 enum class Actions {
     ACTION_GET_PHONE_NUMBER,
@@ -22,6 +22,20 @@ enum class Actions {
     ACTION_REBOOT_DEVICE,
     ACTION_CALL_LOCK,
     ACTION_CALL_UNLOCK,
+    ACTION_LOCK_SCREEN,
     ACTION_RESET_PASSWORD,
     ACTION_REMOVE_DEVICE,
+}
+
+object DeviceActionsMapper {
+    // Convert enum to string
+    fun fromEnumToString(action: Actions): String = action.name
+
+    // Convert string to enum
+    fun fromStringToEnum(actionString: String): Actions? =
+        try {
+            Actions.valueOf(actionString)
+        } catch (e: IllegalArgumentException) {
+            null // Return null if no matching enum is found
+        }
 }

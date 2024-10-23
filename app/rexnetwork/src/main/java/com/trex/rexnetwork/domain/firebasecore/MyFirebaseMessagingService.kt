@@ -1,6 +1,5 @@
-package com.trex.rexandroidsecureclient.ui
+package com.trex.rexnetwork.domain.firebasecore
 
-import ForegroundService
 import android.content.Context
 import android.content.Intent
 import android.os.PowerManager
@@ -8,9 +7,6 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.google.gson.Gson
-import com.trex.rexnetwork.data.ActionMessageDTO
-
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onCreate() {
@@ -37,14 +33,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     fun handlePayload(payload: Map<String, String>) {
         val actionString = payload["ActionMessageDTO"]
-        val intent = Intent("com.trex.ACTION_PAYLOAD_RECEIVED").apply {
-            putExtra("payload", HashMap(payload)) // Send payload as extra
-        }
+        val intent =
+            Intent("com.trex.ACTION_PAYLOAD_RECEIVED").apply {
+                putExtra("payload", HashMap(payload)) // Send payload as extra
+            }
         if (actionString.isNullOrEmpty()) {
             Log.w("PayloadHandler", "Action string is null or empty")
             return
         }
-
     }
 
     override fun onNewToken(token: String) {
