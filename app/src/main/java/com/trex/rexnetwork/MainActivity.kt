@@ -11,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import com.trex.rexnetwork.data.ActionMessageDTO
+import com.trex.rexnetwork.data.Actions
 import com.trex.rexnetwork.domain.repositories.SendActionMessageRepository
 import com.trex.rexnetwork.ui.theme.RexNetworkTheme
 import kotlinx.coroutines.GlobalScope
@@ -25,7 +26,6 @@ class MainActivity : ComponentActivity() {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding)) {
                         Button(onClick = { send() }) {
-
                         }
                     }
                 }
@@ -34,13 +34,11 @@ class MainActivity : ComponentActivity() {
     }
 
     fun send() {
-
-
         val messageDTO =
             ActionMessageDTO(
                 "some token",
                 Actions.ACTION_UNLOCK_DEVICE,
-                mapOf("some" to "some")
+                mapOf("some" to "some"),
             )
 
         GlobalScope.launch {
