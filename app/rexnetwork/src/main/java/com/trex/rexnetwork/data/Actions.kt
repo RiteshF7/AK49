@@ -27,7 +27,7 @@ enum class Actions {
     ACTION_REMOVE_DEVICE,
 }
 
-object DeviceActionsMapper {
+object ActionsMapper {
     // Convert enum to string
     fun fromEnumToString(action: Actions): String = action.name
 

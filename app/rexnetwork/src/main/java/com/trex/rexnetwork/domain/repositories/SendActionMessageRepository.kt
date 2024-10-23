@@ -6,12 +6,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class SendActionMessageRepository : BaseRepository() {
-
     fun sendActionMessage(message: ActionMessageDTO) {
         CoroutineScope(Dispatchers.IO).launch {
             apiService.sendOnlineMessage(message)
         }
-
     }
-
 }
