@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.trex.rexnetwork.Constants
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onCreate() {
@@ -32,14 +33,19 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     fun handlePayload(payload: Map<String, String>) {
-        val actionString = payload["ActionMessageDTO"]
-        val intent =
-            Intent("com.trex.ACTION_PAYLOAD_RECEIVED").apply {
-                putExtra("payload", HashMap(payload)) // Send payload as extra
-            }
+        val actionString = payload[Constants.KEY_PAYLOAD_DATA]
+        val packageName = applicationContext.packageName
+
         if (actionString.isNullOrEmpty()) {
             Log.w("PayloadHandler", "Action string is null or empty")
             return
+        }
+        actionString.let { extra ->
+            val intent =
+                Intent("$packageName.${Constants.KEY_BROADCAST_PAYLOAD_ACTION}").apply {
+                    putExtra(Constants.KEY_PAYLOAD_DATA, extra)
+                }
+            sendBroadcast(intent)
         }
     }
 
