@@ -10,8 +10,11 @@ import com.google.firebase.messaging.RemoteMessage
 import com.trex.rexnetwork.Constants
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
+    private lateinit var fcmTokenManager: FCMTokenManager
+
     override fun onCreate() {
         super.onCreate()
+        fcmTokenManager = FCMTokenManager(applicationContext)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -50,7 +53,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onNewToken(token: String) {
-//        CommonConstants.fcmToken = token
+        fcmTokenManager.saveFcmToken(fcmToken = token)
     }
 
     private fun startForegroundService() {
