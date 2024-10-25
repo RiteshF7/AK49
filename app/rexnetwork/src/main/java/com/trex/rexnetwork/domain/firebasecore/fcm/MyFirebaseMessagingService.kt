@@ -1,4 +1,4 @@
-package com.trex.rexnetwork.domain.firebasecore
+package com.trex.rexnetwork.domain.firebasecore.fcm
 
 import android.content.Context
 import android.content.Intent
@@ -14,7 +14,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onCreate() {
         super.onCreate()
-        fcmTokenManager = FCMTokenManager(applicationContext)
+        val updater =
+            if (packageName == "com.trex.rexandroidsecureclient") {
+                ClientFCMTokenUpdater(applicationContext)
+            } else {
+                ShopFcmTokenUpdater(applicationContext)
+            }
+        fcmTokenManager = FCMTokenManager(applicationContext, updater)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -53,7 +59,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onNewToken(token: String) {
-        fcmTokenManager.saveFcmToken(fcmToken = token)
+        fcmTokenManager.saveFcmToken(token)
     }
 
     private fun startForegroundService() {

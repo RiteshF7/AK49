@@ -1,6 +1,9 @@
 package com.trex.rexnetwork.data
 
+import android.content.Intent
+import android.util.Log
 import com.google.gson.Gson
+import com.trex.rexnetwork.Constants
 
 data class ActionMessageDTO(
     val fcmToken: String,
@@ -10,12 +13,29 @@ data class ActionMessageDTO(
 )
 
 object ActionMessageDTOMapper {
-    fun fromJsonToDTO(json: String): ActionMessageDTO {
+    fun getMessageDTOFromIntent(intent: Intent): ActionMessageDTO? {
+        val actionMessageString = getPayloadString(intent)
+
+        if (actionMessageString.isNullOrBlank()) {
+            Log.e("", "message not found in payload!")
+            return null
+        }
+        val actionMessageDTO = fromJsonToDTO(actionMessageString)
+        if (actionMessageDTO == null) {
+            Log.e("", "unable to convert json to MESSAGE_DTO object using GSON !")
+            return null
+        }
+        return actionMessageDTO
+    }
+
+    fun getPayloadString(intent: Intent): String? = intent.getStringExtra(Constants.KEY_PAYLOAD_DATA)
+
+    fun fromJsonToDTO(json: String): ActionMessageDTO? {
         try {
             val actionMessageDTO = Gson().fromJson(json, ActionMessageDTO::class.java)
             return actionMessageDTO
         } catch (e: Exception) {
-            throw IllegalArgumentException("Invalid JSON format")
+            return null
         }
     }
 }

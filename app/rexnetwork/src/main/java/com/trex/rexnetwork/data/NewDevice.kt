@@ -20,7 +20,7 @@ data class NewDevice(
     val emiPerMonth: String = "",
     val dueDate: String = "",
     val durationInMonths: String = "",
-) : Parcelable {
+) : BaseFirestoreResponse {
     // No-argument constructor required for Firestore
     constructor() : this("", "", "")
 }

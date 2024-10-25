@@ -1,13 +1,14 @@
-package com.trex.rexnetwork.domain.firebasecore
+package com.trex.rexnetwork.domain.firebasecore.firesstore
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.trex.rexnetwork.data.BaseFirestoreResponse
 
 enum class FireStoreExeptions {
     DOC_NOT_FOUND,
 }
 
-abstract class FirestoreBase<T : Any>(
+abstract class FirestoreBase<T : BaseFirestoreResponse>(
     private val collectionPath: String,
 ) {
     protected val db = FirebaseFirestore.getInstance()

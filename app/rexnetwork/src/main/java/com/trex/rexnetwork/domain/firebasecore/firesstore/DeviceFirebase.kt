@@ -1,4 +1,4 @@
-package com.trex.rexnetwork.domain.firebasecore
+package com.trex.rexnetwork.domain.firebasecore.firesstore
 
 import com.trex.rexnetwork.data.NewDevice
 

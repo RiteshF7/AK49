@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.Log
 
 class SharedPreferenceManager(
-    private val context: Context,
+    context: Context,
 ) {
     private val TAG = "SHARED_PREF"
     private val keyFCMToken = "KEY_FCM_TOKEN"

@@ -1,4 +1,4 @@
-package com.trex.rexnetwork.domain.firebasecore
+package com.trex.rexnetwork.domain.firebasecore.fcm
 
 // ForegroundService.kt
 import android.app.AlarmManager
