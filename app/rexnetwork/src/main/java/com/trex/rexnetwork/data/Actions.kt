@@ -25,6 +25,7 @@ enum class Actions {
     ACTION_LOCK_SCREEN,
     ACTION_RESET_PASSWORD,
     ACTION_REMOVE_DEVICE,
+    ACTION_REG_DEVICE,
 }
 
 object ActionsMapper {

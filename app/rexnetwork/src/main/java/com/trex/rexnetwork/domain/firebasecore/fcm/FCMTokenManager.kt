@@ -7,18 +7,18 @@ import com.trex.rexnetwork.utils.SharedPreferenceManager
 
 class FCMTokenManager(
     context: Context,
-    private val manager: IFCMTokenUpdater,
+    private val updater: IFCMTokenUpdater,
 ) {
     private val mShardPref = SharedPreferenceManager(context)
     private var currentToken = mShardPref.getFCMToken()
 
     fun saveFcmToken(fcmToken: String) {
         mShardPref.saveFcmToken(fcmToken)
-        manager.updateFirestoreFCMToken(fcmToken)
+        updater.updateFirestoreFCMToken(fcmToken)
         currentToken = fcmToken
     }
 
-    fun refreshToken(token:String) {
+    fun refreshToken(token: String) {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("", "Fetching FCM token failed! ${task.exception}")

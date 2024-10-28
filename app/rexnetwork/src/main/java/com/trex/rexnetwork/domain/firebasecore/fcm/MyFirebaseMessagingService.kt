@@ -11,10 +11,11 @@ import com.trex.rexnetwork.Constants
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     private lateinit var fcmTokenManager: FCMTokenManager
+    private lateinit var updater: IFCMTokenUpdater
 
     override fun onCreate() {
         super.onCreate()
-        val updater =
+        updater =
             if (packageName == "com.trex.rexandroidsecureclient") {
                 ClientFCMTokenUpdater(applicationContext)
             } else {
