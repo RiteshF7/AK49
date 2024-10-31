@@ -68,7 +68,7 @@ class ForegroundService : Service() {
             .Builder(this, CHANNEL_ID)
             .setContentTitle("App is running in background")
             .setContentText("Maintaining high-priority connection")
-            .setSmallIcon(com.google.android.material.R.drawable.ic_call_answer)
+            .setSmallIcon(com.google.android.material.R.drawable.notification_icon_background)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .setCategory(Notification.CATEGORY_SERVICE)
             .build()

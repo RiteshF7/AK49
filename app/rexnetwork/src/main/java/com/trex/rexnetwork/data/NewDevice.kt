@@ -6,20 +6,20 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class NewDevice(
     var shopId: String,
-    val fcmToken: String,
-    val imeiOne: String,
+    var fcmToken: String,
+    var imeiOne: String,
     val manufacturer: String = "",
     val brand: String = "",
-    val modelNumber: String = "",
+    var modelNumber: String = "",
     val androidVersion: String = "",
-    val imeiTwo: String = "000",
+    var imeiTwo: String = "000",
     val isRegComplete: Boolean = false,
     val deviceCode: String = "",
-    val costumerName: String = "",
-    val costumerPhone: String = "",
-    val emiPerMonth: String = "",
-    val dueDate: String = "",
-    val durationInMonths: String = "",
+    var costumerName: String = "",
+    var costumerPhone: String = "",
+    var emiPerMonth: String = "",
+    var dueDate: String = "",
+    var durationInMonths: String = "",
 ) : BaseFirestoreResponse {
     // No-argument constructor required for Firestore
     constructor() : this("", "", "")
