@@ -26,6 +26,7 @@ enum class Actions {
     ACTION_RESET_PASSWORD,
     ACTION_REMOVE_DEVICE,
     ACTION_REG_DEVICE,
+    ACTION_REG_DEVICE_COMPLETED,
 }
 
 object ActionsMapper {

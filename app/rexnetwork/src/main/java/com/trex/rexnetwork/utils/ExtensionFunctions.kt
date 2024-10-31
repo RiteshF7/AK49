@@ -23,6 +23,7 @@ fun <T : Parcelable> Context.startMyActivity(
     val intent =
         Intent(this, activityClass).apply {
             putExtra(INTENT_EXTRA_KEY, extraData)
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
     this.startActivity(intent)
 }

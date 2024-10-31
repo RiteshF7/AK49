@@ -1,7 +1,8 @@
 package com.trex.rexnetwork.domain.firebasecore.fcm.fcmrequestscreen
 
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -31,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.trex.rexnetwork.data.ActionMessageDTO
 import com.trex.rexnetwork.data.Actions
 import com.trex.rexnetwork.utils.getExtraData
-import com.trex.rexnetwork.utils.startMyActivity
 
 // State class to manage UI state
 sealed class FcmRequestState {
@@ -91,18 +91,6 @@ class FcmRequestActivity : ComponentActivity() {
             )
         }
     }
-
-    companion object {
-        fun go(
-            context: Context,
-            messageDTO: ActionMessageDTO,
-        ) {
-            context.startMyActivity(
-                FcmRequestActivity::class.java,
-                messageDTO,
-            )
-        }
-    }
 }
 
 @Composable
@@ -120,9 +108,9 @@ fun FcmRequestScreen(
 
     Box(
         modifier =
-            Modifier
-                .fillMaxSize()
-                .padding(16.dp),
+        Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         contentAlignment = Alignment.Center,
     ) {
         when (val currentState = state) {
@@ -172,10 +160,8 @@ fun FcmRequestScreen(
 }
 
 fun startResultActivity(response: ActionMessageDTO) {
-    when {
-        response.action == Actions.ACTION_REG_DEVICE -> {
-        }
-    }
+    //show success screen
+    Log.i("some!!!", "startResultActivity: Completed flow")
 }
 
 @Composable
