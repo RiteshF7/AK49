@@ -29,7 +29,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.trex.rexnetwork.data.ActionMessageDTO
-import com.trex.rexnetwork.utils.ActivityUtils
+import com.trex.rexnetwork.data.Actions
+import com.trex.rexnetwork.utils.getExtraData
+import com.trex.rexnetwork.utils.startMyActivity
 
 // State class to manage UI state
 sealed class FcmRequestState {
@@ -42,7 +44,7 @@ sealed class FcmRequestState {
     ) : FcmRequestState()
 
     data class Success(
-        val response: String,
+        val response: ActionMessageDTO,
     ) : FcmRequestState()
 
     object Timeout : FcmRequestState()
@@ -50,11 +52,11 @@ sealed class FcmRequestState {
 
 // FCM Response Manager (Singleton)
 object FcmResponseManager {
-    private val callbacks = mutableMapOf<String, (String) -> Unit>()
+    private val callbacks = mutableMapOf<String, (ActionMessageDTO) -> Unit>()
 
     fun registerCallback(
         requestId: String,
-        callback: (String) -> Unit,
+        callback: (ActionMessageDTO) -> Unit,
     ) {
         callbacks[requestId] = callback
     }
@@ -65,27 +67,27 @@ object FcmResponseManager {
 
     fun handleResponse(
         requestId: String,
-        response: String,
+        response: ActionMessageDTO,
     ) {
         callbacks[requestId]?.invoke(response)
     }
 }
 
-// Activity Implementation
 class FcmRequestActivity : ComponentActivity() {
     private val viewModel: FcmRequestViewModel by viewModels()
+    private lateinit var messageData: ActionMessageDTO
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Get ActionMessageDTO from the intent
-        val actionMessageDTO = ActivityUtils.getExtraData<ActionMessageDTO>(intent)
+        messageData = intent.getExtraData<ActionMessageDTO>()
 
         setContent {
             FcmRequestScreen(
                 viewModel = viewModel,
-                actionMessageDTO = actionMessageDTO,
-                onComplete = { finish() },
+                actionMessageDTO = messageData,
+                onComplete = {
+                    finish()
+                },
             )
         }
     }
@@ -95,10 +97,9 @@ class FcmRequestActivity : ComponentActivity() {
             context: Context,
             messageDTO: ActionMessageDTO,
         ) {
-            ActivityUtils.startActivity(
-                context = context,
-                activity = FcmRequestActivity::class.java,
-                extraData = messageDTO,
+            context.startMyActivity(
+                FcmRequestActivity::class.java,
+                messageDTO,
             )
         }
     }
@@ -145,6 +146,7 @@ fun FcmRequestScreen(
 
             is FcmRequestState.Success -> {
                 LaunchedEffect(Unit) {
+                    startResultActivity(currentState.response)
                     onComplete()
                 }
             }
@@ -154,7 +156,6 @@ fun FcmRequestScreen(
             }
 
             is FcmRequestState.Idle -> {
-
             }
         }
     }
@@ -167,6 +168,13 @@ fun FcmRequestScreen(
             },
             onCancel = onComplete,
         )
+    }
+}
+
+fun startResultActivity(response: ActionMessageDTO) {
+    when {
+        response.action == Actions.ACTION_REG_DEVICE -> {
+        }
     }
 }
 

@@ -4,6 +4,7 @@ import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trex.rexnetwork.data.ActionMessageDTO
+import com.trex.rexnetwork.domain.repositories.SendActionMessageRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,6 +15,7 @@ import kotlin.time.Duration.Companion.seconds
 class FcmRequestViewModel : ViewModel() {
     private val _state = MutableStateFlow<FcmRequestState>(FcmRequestState.Idle)
     val state: StateFlow<FcmRequestState> = _state.asStateFlow()
+    private val repo = SendActionMessageRepository()
 
     private val timeoutDuration = 30.seconds
     private var requestId: String? = null
@@ -31,8 +33,7 @@ class FcmRequestViewModel : ViewModel() {
                 }
 
                 // Build and Send FCM message
-                val message = buildMessage(actionMessageDTO)
-                sendMessage(message)
+                sendMessage(actionMessageDTO)
 
                 // Start timeout timer
                 startTimeoutTimer()
@@ -42,14 +43,8 @@ class FcmRequestViewModel : ViewModel() {
         }
     }
 
-    fun buildMessage(actionMessageDTO: ActionMessageDTO): String {
-        // Replace this with actual logic to build a message string
-        return "Sending action: ${actionMessageDTO.action} with payload: ${actionMessageDTO.payload} to ${actionMessageDTO.fcmToken}"
-    }
-
-    suspend fun sendMessage(message: String) {
-        // Replace with actual send logic using FirebaseMessaging or another method
-        println("Sending message: $message")
+    fun sendMessage(message: ActionMessageDTO) {
+        repo.sendActionMessage(message)
     }
 
     fun startTimeoutTimer() {
@@ -67,7 +62,7 @@ class FcmRequestViewModel : ViewModel() {
             }.start()
     }
 
-    fun handleFcmResponse(response: String) {
+    fun handleFcmResponse(response: ActionMessageDTO) {
         timer?.cancel()
         _state.value = FcmRequestState.Success(response)
         cleanup()
