@@ -3,6 +3,7 @@ package com.trex.rexnetwork.domain.firebasecore.fcm.fcmrequestscreen
 import android.os.CountDownTimer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.trex.rexnetwork.Constants
 import com.trex.rexnetwork.data.ActionMessageDTO
 import com.trex.rexnetwork.domain.repositories.SendActionMessageRepository
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -64,7 +65,7 @@ class FcmRequestViewModel : ViewModel() {
 
     fun handleFcmResponse(response: ActionMessageDTO) {
         val fcmResponseStatus = response.payload[response.action.name]
-        if (fcmResponseStatus.equals("true")) {
+        if (fcmResponseStatus.equals(Constants.RESPONSE_RESULT_SUCCESS)) {
             _state.value = FcmRequestState.Success(response)
         } else {
             _state.value = FcmRequestState.Error("Failed reaction result")

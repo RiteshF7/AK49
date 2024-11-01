@@ -1,6 +1,12 @@
 package com.trex.rexnetwork.data
 
 enum class Actions {
+    // things shops can receive and client can send
+
+    // Actions shops can receive
+    ACTION_REG_DEVICE,
+
+    // client can receive actions
     ACTION_GET_PHONE_NUMBER,
     ACTION_GET_CONTACTS,
     ACTION_GET_CONTACTS_VIA_MESSAGE,
@@ -25,8 +31,6 @@ enum class Actions {
     ACTION_LOCK_SCREEN,
     ACTION_RESET_PASSWORD,
     ACTION_REMOVE_DEVICE,
-    ACTION_REG_DEVICE,
-    ACTION_REG_DEVICE_COMPLETED,
 }
 
 object ActionsMapper {

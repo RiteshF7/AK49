@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build.VERSION.SDK_INT
 import android.os.Parcelable
+import com.trex.rexnetwork.data.Actions
 
 const val INTENT_EXTRA_KEY = "intent_extra_key"
 
@@ -38,3 +39,5 @@ fun Context.startMyActivity(activityClass: Class<out Activity>) {
 inline fun <reified T : Parcelable> Intent.getExtraData(): T =
     this.parcelable<T>(INTENT_EXTRA_KEY)
         ?: throw IllegalArgumentException("EXTRA ${T::class.simpleName} data is required!!")
+
+fun Actions.isGetRequest(): Boolean = this.name.contains("GET")

@@ -2,7 +2,6 @@ package com.trex.rexnetwork.domain.firebasecore.fcm.fcmrequestscreen
 
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -30,8 +29,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.trex.rexnetwork.data.ActionMessageDTO
-import com.trex.rexnetwork.data.Actions
 import com.trex.rexnetwork.utils.getExtraData
+import java.util.PriorityQueue
 
 // State class to manage UI state
 sealed class FcmRequestState {
@@ -53,16 +52,19 @@ sealed class FcmRequestState {
 // FCM Response Manager (Singleton)
 object FcmResponseManager {
     private val callbacks = mutableMapOf<String, (ActionMessageDTO) -> Unit>()
+    private val callStack = PriorityQueue<String>()
 
     fun registerCallback(
         requestId: String,
         callback: (ActionMessageDTO) -> Unit,
     ) {
         callbacks[requestId] = callback
+        callStack.add(requestId)
     }
 
     fun unregisterCallback(requestId: String) {
         callbacks.remove(requestId)
+        callStack.poll()
     }
 
     fun handleResponse(
@@ -71,6 +73,10 @@ object FcmResponseManager {
     ) {
         callbacks[requestId]?.invoke(response)
     }
+
+    fun hasRequest(requestId: String) = callStack.contains(requestId)
+
+    fun getLatestRequestId(): String? = callStack.peek()
 }
 
 class FcmRequestActivity : ComponentActivity() {
@@ -108,9 +114,9 @@ fun FcmRequestScreen(
 
     Box(
         modifier =
-        Modifier
-            .fillMaxSize()
-            .padding(16.dp),
+            Modifier
+                .fillMaxSize()
+                .padding(16.dp),
         contentAlignment = Alignment.Center,
     ) {
         when (val currentState = state) {
@@ -160,7 +166,7 @@ fun FcmRequestScreen(
 }
 
 fun startResultActivity(response: ActionMessageDTO) {
-    //show success screen
+    // show success screen
     Log.i("some!!!", "startResultActivity: Completed flow")
 }
 
