@@ -64,7 +64,7 @@ class FcmRequestViewModel : ViewModel() {
     }
 
     fun handleFcmResponse(response: ActionMessageDTO) {
-        val fcmResponseStatus = response.payload[response.action.name]
+        val fcmResponseStatus = response.payload[Constants.KEY_RESPOSE_RESULT_STATUS]
         if (fcmResponseStatus.equals(Constants.RESPONSE_RESULT_SUCCESS)) {
             _state.value = FcmRequestState.Success(response)
         } else {

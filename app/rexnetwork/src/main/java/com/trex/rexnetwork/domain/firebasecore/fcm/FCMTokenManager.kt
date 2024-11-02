@@ -31,5 +31,5 @@ class FCMTokenManager(
         }
     }
 
-    fun getFcmToken(): String? = currentToken
+    fun getFcmToken(): String = currentToken ?: throw NullPointerException("Client fcm token is null")
 }

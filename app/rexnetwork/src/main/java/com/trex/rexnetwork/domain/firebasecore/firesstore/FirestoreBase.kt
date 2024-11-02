@@ -2,6 +2,7 @@ package com.trex.rexnetwork.domain.firebasecore.firesstore
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.Source
 import com.trex.rexnetwork.data.BaseFirestoreResponse
 
 enum class FireStoreExeptions {
@@ -21,7 +22,7 @@ abstract class FirestoreBase<T : BaseFirestoreResponse>(
     ) {
         val docRef = db.collection(collectionPath).document(docId)
         docRef
-            .get()
+            .get(Source.SERVER)
             .addOnSuccessListener { documentSnapshot ->
                 if (documentSnapshot.exists()) {
                     val data = documentSnapshot.toObject(clazz) // Use the passed class parameter
