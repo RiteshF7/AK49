@@ -18,7 +18,7 @@ class FcmRequestViewModel : ViewModel() {
     val state: StateFlow<FcmRequestState> = _state.asStateFlow()
     private val repo = SendActionMessageRepository()
 
-    private val timeoutDuration = 30.seconds
+    private val timeoutDuration = 50.seconds
     private var requestId: String? = null
     private var timer: CountDownTimer? = null
 
@@ -57,7 +57,7 @@ class FcmRequestViewModel : ViewModel() {
                 override fun onFinish() {
                     if (_state.value is FcmRequestState.Loading) {
                         _state.value = FcmRequestState.Timeout
-                        cleanup()
+                        cleanup(false)
                     }
                 }
             }.start()
@@ -74,9 +74,9 @@ class FcmRequestViewModel : ViewModel() {
         cleanup()
     }
 
-    private fun cleanup() {
+    private fun cleanup(isrequestConsumed: Boolean = true) {
         requestId?.let {
-            FcmResponseManager.unregisterCallback(it)
+            FcmResponseManager.unregisterCallback(it,isrequestConsumed)
             requestId = null
         }
     }

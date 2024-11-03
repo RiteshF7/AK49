@@ -1,7 +1,6 @@
 package com.trex.rexnetwork.domain.firebasecore.fcm.fcmrequestscreen
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -11,9 +10,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -27,10 +28,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.trex.rexnetwork.data.ActionMessageDTO
 import com.trex.rexnetwork.utils.getExtraData
-import java.util.PriorityQueue
+import java.util.UUID
 
 // State class to manage UI state
 sealed class FcmRequestState {
@@ -47,36 +51,6 @@ sealed class FcmRequestState {
     ) : FcmRequestState()
 
     object Timeout : FcmRequestState()
-}
-
-// FCM Response Manager (Singleton)
-object FcmResponseManager {
-    private val callbacks = mutableMapOf<String, (ActionMessageDTO) -> Unit>()
-    private val callStack = PriorityQueue<String>()
-
-    fun registerCallback(
-        requestId: String,
-        callback: (ActionMessageDTO) -> Unit,
-    ) {
-        callbacks[requestId] = callback
-        callStack.add(requestId)
-    }
-
-    fun unregisterCallback(requestId: String) {
-        callbacks.remove(requestId)
-        callStack.poll()
-    }
-
-    fun handleResponse(
-        requestId: String,
-        response: ActionMessageDTO,
-    ) {
-        callbacks[requestId]?.invoke(response)
-    }
-
-    fun hasRequest(requestId: String) = callStack.contains(requestId)
-
-    fun getLatestRequestId(): String? = callStack.peek()
 }
 
 class FcmRequestActivity : ComponentActivity() {
@@ -106,6 +80,7 @@ fun FcmRequestScreen(
     onComplete: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
     var showRetryDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
@@ -139,10 +114,7 @@ fun FcmRequestScreen(
             }
 
             is FcmRequestState.Success -> {
-                LaunchedEffect(Unit) {
-                    startResultActivity(currentState.response)
-                    onComplete()
-                }
+                onComplete()
             }
 
             is FcmRequestState.Timeout -> {
@@ -158,16 +130,38 @@ fun FcmRequestScreen(
         RetryDialog(
             onRetry = {
                 showRetryDialog = false
-                viewModel.sendFcmRequest(actionMessageDTO)
+                viewModel.sendFcmRequest(
+                    actionMessageDTO.copy(
+                        requestId = UUID.randomUUID().toString(),
+                    ),
+                )
             },
             onCancel = onComplete,
         )
     }
 }
 
-fun startResultActivity(response: ActionMessageDTO) {
-    // show success screen
-    Log.i("some!!!", "startResultActivity: Completed flow")
+@Composable
+fun GetStatusIcon(isSuccess: Boolean) {
+    Icon(
+        painter =
+            painterResource(
+                id =
+                    if (isSuccess) {
+                        android.R.drawable.ic_dialog_info // Replace with your success icon
+                    } else {
+                        android.R.drawable.ic_dialog_alert // Replace with your failure icon
+                    },
+            ),
+        contentDescription = if (isSuccess) "Success" else "Failure",
+        modifier = Modifier.size(80.dp),
+        tint =
+            if (isSuccess) {
+                Color(0xFF4CAF50) // Success Green
+            } else {
+                Color(0xFFE53935) // Error Red
+            },
+    )
 }
 
 @Composable
@@ -180,6 +174,8 @@ fun ErrorContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
+        GetStatusIcon(false)
+
         Text(
             text = error,
             style = MaterialTheme.typography.bodyLarge,
@@ -194,6 +190,30 @@ fun ErrorContent(
             OutlinedButton(onClick = onCancel) {
                 Text("Cancel")
             }
+        }
+    }
+}
+
+@Composable
+fun SuccessContent(
+    response: ActionMessageDTO,
+    onFinish: () -> Unit,
+) {
+    val message: String = response.payload[response.action.name] ?: "Action completed successfully!"
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        GetStatusIcon(true)
+
+        Text(
+            text = message,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.error,
+        )
+        OutlinedButton(onClick = onFinish) {
+            Text("Continue")
         }
     }
 }
