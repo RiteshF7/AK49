@@ -61,6 +61,7 @@ fun ResultScreen(
                 animation = tween(1000),
                 repeatMode = RepeatMode.Reverse,
             ),
+        label = "",
     )
 
     Box(
@@ -183,7 +184,7 @@ fun ResultScreenPreview() {
 // Theme color definitions (if needed)
 val colors =
     lightColorScheme(
-        primary = Color(0xFF2196F3),
+        primary = Color(0xFF00DC7F),
         secondary = Color(0xFF03A9F4),
         tertiary = Color(0xFF00BCD4),
         background = Color.Black,

@@ -4,18 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
-import com.trex.rexnetwork.data.ActionMessageDTO
-import com.trex.rexnetwork.data.Actions
-import com.trex.rexnetwork.domain.repositories.SendActionMessageRepository
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import com.trex.rexnetwork.ui.theme.RexNetworkTheme
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +21,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             RexNetworkTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Box(modifier = Modifier.padding(innerPadding)) {
-                        Button(onClick = { send() }) {
+                    Box(
+                        modifier = Modifier
+                            .padding(innerPadding)
+                            .background(color = Color.Black.copy(alpha = 0.85f))
+                    ) {
+                        Box(modifier = Modifier.padding(10.dp)) {
+                            ActionGrid()
                         }
                     }
                 }
@@ -33,16 +35,4 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    fun send() {
-        val messageDTO =
-            ActionMessageDTO(
-                "some token",
-                Actions.ACTION_UNLOCK_DEVICE,
-                mapOf("some" to "some"),
-            )
-
-        GlobalScope.launch {
-            SendActionMessageRepository().sendActionMessage(messageDTO)
-        }
-    }
 }
