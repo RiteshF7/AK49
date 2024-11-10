@@ -20,11 +20,14 @@ inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? =
 fun <T : Parcelable> Context.startMyActivity(
     activityClass: Class<out Activity>,
     extraData: T,
+    isNewTask: Boolean = true,
 ) {
     val intent =
         Intent(this, activityClass).apply {
             putExtra(INTENT_EXTRA_KEY, extraData)
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            if (isNewTask) {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
         }
     this.startActivity(intent)
 }
