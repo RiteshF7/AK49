@@ -13,4 +13,18 @@ class SendActionMessageRepository : BaseRepository() {
             apiService.sendOnlineMessage(message)
         }
     }
+
+    suspend fun verifyCode(code: String): Boolean =
+        try {
+            val response = apiService.verifyCode(code)
+            if (response.isSuccessful) {
+                response.body() ?: false
+            } else {
+                println("Error: ${response.code()}")
+                false
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
 }

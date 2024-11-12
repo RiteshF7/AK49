@@ -1,13 +1,12 @@
 package com.trex.rexnetwork.data
 
-import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class NewDevice(
     var shopId: String,
     var fcmToken: String,
-    var imeiOne: String,
+    var imeiOne: String = "",
     val manufacturer: String = "",
     val brand: String = "",
     var modelNumber: String = "",
@@ -20,7 +19,10 @@ data class NewDevice(
     var emiPerMonth: String = "",
     var dueDate: String = "",
     var durationInMonths: String = "",
+    val isDeviceLocked: Boolean = false,
+    val isCameraLocked: Boolean = false,
+    val isCallLocked: Boolean = false,
+    val unlockCode: String = "000000",
 ) : BaseFirestoreResponse {
-    // No-argument constructor required for Firestore
-    constructor() : this("", "", "")
+    constructor() : this("", "")
 }
