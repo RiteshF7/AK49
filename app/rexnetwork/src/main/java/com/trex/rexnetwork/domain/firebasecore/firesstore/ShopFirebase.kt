@@ -2,16 +2,18 @@ package com.trex.rexnetwork.domain.firebasecore.firesstore
 
 import android.util.Log
 import com.trex.rexnetwork.data.BaseFirestoreResponse
+import com.trex.rexnetwork.data.NewDevice
 import kotlinx.parcelize.Parcelize
+import kotlin.random.Random
 
 @Parcelize
 data class Shop(
-    val ownerName: String = "",
     val shopName: String = "",
-    val dealerCode: String = "",
-    val tokenBalance: Int = 10,
-    val activeDevicesCount: Int = 0,
+    val ownerName: String = "",
+    val shopCode: String = Random.nextInt(1, 100000).toString(),
     val fcmToken: String = "",
+    val tokenBalance: List<String> = listOf(),
+    val deletedDevices: List<NewDevice> = listOf(),
 ) : BaseFirestoreResponse
 
 class ShopFirestore : FirestoreBase<Shop>("shops") {
@@ -33,6 +35,18 @@ class ShopFirestore : FirestoreBase<Shop>("shops") {
         getShopById(
             shopId,
             { shop -> onSuccess(shop.fcmToken) },
+            { error -> Log.e("", "getShopFcmToken: error getting shop from client app!!") },
+        )
+    }
+
+    fun getTokenBalanceList(
+        shopId: String,
+        onSuccess: (List<String>) -> Unit,
+    ) {
+        getSingleField(
+            shopId,
+            Shop::tokenBalance.name,
+            { shop -> onSuccess(shop as List<String>) },
             { error -> Log.e("", "getShopFcmToken: error getting shop from client app!!") },
         )
     }

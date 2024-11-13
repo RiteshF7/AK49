@@ -10,6 +10,8 @@ class SharedPreferenceManager(
     private val keyFCMToken = "KEY_FCM_TOKEN"
     private val keyIMEI: String = "KEY_IMEI"
     private val keyShopId: String = "KEY_SHOP_ID"
+    private val keyDeviceId: String = "KEY_DEVICE_ID"
+    private val keyDeviceRegStatus: String = "KEY_DEVICE_ID"
     private val sharePrefKey = "${context.packageName}.SHARED_PREF"
     private val sharedPreferences = context.getSharedPreferences(sharePrefKey, Context.MODE_PRIVATE)
 
@@ -20,12 +22,28 @@ class SharedPreferenceManager(
         sharedPreferences.edit().putString(key, value).apply()
     }
 
+    private fun saveBoolean(
+        key: String,
+        value: Boolean,
+    ) {
+        sharedPreferences.edit().putBoolean(key, value).apply()
+    }
+
     private fun getString(key: String): String? {
         if (prefContains(key)) {
             return sharedPreferences.getString(key, null)
         } else {
             Log.e(TAG, "getString: $key not found in shared prefs")
             return null
+        }
+    }
+
+    private fun getBoolean(key: String): Boolean {
+        if (prefContains(key)) {
+            return sharedPreferences.getBoolean(key, false)
+        } else {
+            Log.e(TAG, "getString: $key not found in shared prefs")
+            return false
         }
     }
 
@@ -48,4 +66,16 @@ class SharedPreferenceManager(
     }
 
     fun getShopId() = getString(keyShopId)
+
+    fun saveDeviceId(deviceId: String) {
+        saveString(keyDeviceId, deviceId)
+    }
+
+    fun getDeviceId() = getString(keyDeviceId)
+
+    fun saveRegCompleteStatus(status: Boolean) {
+        saveBoolean(keyDeviceRegStatus, status)
+    }
+
+    fun getRegCompleteStatus(): Boolean = getBoolean(keyDeviceRegStatus)
 }

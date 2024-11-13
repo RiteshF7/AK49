@@ -41,6 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trex.rexnetwork.Constants
 import com.trex.rexnetwork.data.ActionMessageDTO
+import com.trex.rexnetwork.data.Actions
+import com.trex.rexnetwork.utils.SharedPreferenceManager
 import com.trex.rexnetwork.utils.getExtraData
 import kotlinx.parcelize.Parcelize
 
@@ -210,6 +212,10 @@ class FcmResultActivity : ComponentActivity() {
         val message: String =
             result.payload[result.action.name] ?: "Action completed successfully!"
 
+        //temp fix for finilize activity //fix this in future
+        if (result.action == Actions.ACTION_REG_DEVICE) {
+            SharedPreferenceManager(this).saveRegCompleteStatus(isSuccess)
+        }
         setContent {
             MaterialTheme(colorScheme = colors) {
                 Surface(

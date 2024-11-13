@@ -2,6 +2,7 @@ package com.trex.rexnetwork.domain.repositories
 
 import android.util.Log
 import com.trex.rexnetwork.data.ActionMessageDTO
+import com.trex.rexnetwork.domain.firebasecore.firesstore.Shop
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -14,9 +15,9 @@ class SendActionMessageRepository : BaseRepository() {
         }
     }
 
-    suspend fun verifyCode(code: String): Boolean =
+    suspend fun verifyCode(code: String,shopId:String,deviceId:String): Boolean =
         try {
-            val response = apiService.verifyCode(code)
+            val response = apiService.verifyCode(code,shopId,deviceId)
             if (response.isSuccessful) {
                 response.body() ?: false
             } else {

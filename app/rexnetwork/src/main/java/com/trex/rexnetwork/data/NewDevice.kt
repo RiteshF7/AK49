@@ -6,6 +6,7 @@ import kotlinx.android.parcel.Parcelize
 data class NewDevice(
     var shopId: String,
     var fcmToken: String,
+    var deviceId:String="",
     var imeiOne: String = "",
     val manufacturer: String = "",
     val brand: String = "",

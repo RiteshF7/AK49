@@ -29,6 +29,8 @@ interface RexKtorServer {
     @GET("/verifycode")
     suspend fun verifyCode(
         @Query("code") code: String,
+        @Query("shopId") shopId: String,
+        @Query("deviceId") deviceId: String,
     ): Response<Boolean>
 }
 
