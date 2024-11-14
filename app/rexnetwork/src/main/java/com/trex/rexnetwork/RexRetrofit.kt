@@ -4,7 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.trex.rexnetwork.Constants.BASE_URL
 import com.trex.rexnetwork.data.ActionMessageDTO
-import com.trex.rexnetwork.data.NewDevice
+import com.trex.rexnetwork.data.UpdateTokenRequest
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -21,9 +21,9 @@ interface RexKtorServer {
     ): Response<Unit>
 
     //
-    @POST("/regdevice")
-    suspend fun registerNewDevice(
-        @Body body: NewDevice,
+    @POST("/updateDeviceFcmToken")
+    suspend fun updateFcmToken(
+        @Body body: UpdateTokenRequest,
     ): Response<Unit>
 
     @GET("/verifycode")

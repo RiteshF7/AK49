@@ -8,16 +8,17 @@ interface IFCMTokenUpdater {
     fun updateFirestoreFCMToken(token: String)
 }
 
-abstract class FCMTokenUpdater(context: Context):IFCMTokenUpdater{
+abstract class FCMTokenUpdater(
+    context: Context,
+) : IFCMTokenUpdater {
     protected val mshardPref = SharedPreferenceManager(context)
     protected val shopId = mshardPref.getShopId()
-    protected val fieldName = "fcmToken"
 
-    val success = fun(){
+    val success = fun() {
         Log.i("", "fcm token updateSuccess on firestore!")
     }
 
-    val failed = fun(error:Exception){
+    val failed = fun(error: Exception) {
         Log.i("", "updateFailure: fcm token failed on firestore!$error")
     }
 }

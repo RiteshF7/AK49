@@ -20,7 +20,7 @@ inline fun <reified T : Parcelable> Intent.parcelable(key: String): T? =
 fun <T : Parcelable> Context.startMyActivity(
     activityClass: Class<out Activity>,
     extraData: T,
-    isNewTask: Boolean = true,
+    isNewTask: Boolean = false,
 ) {
     val intent =
         Intent(this, activityClass).apply {
@@ -33,8 +33,17 @@ fun <T : Parcelable> Context.startMyActivity(
 }
 
 // Overloaded function to start any activity without extra data
-fun Context.startMyActivity(activityClass: Class<out Activity>) {
-    val intent = Intent(this, activityClass)
+fun Context.startMyActivity(
+    activityClass: Class<out Activity>,
+    isNewTask: Boolean = false,
+) {
+    val intent =
+        Intent(this, activityClass).apply {
+            if (isNewTask) {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+        }
+
     this.startActivity(intent)
 }
 
