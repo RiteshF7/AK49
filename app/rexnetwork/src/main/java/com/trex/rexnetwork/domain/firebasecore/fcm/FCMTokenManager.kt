@@ -18,25 +18,25 @@ class FCMTokenManager(
         currentToken = fcmToken
     }
 
-    fun refreshToken(token: String) {
+    fun refreshToken(onComplete: (String) -> Unit) {
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("", "Fetching FCM token failed! ${task.exception}")
                 return@addOnCompleteListener
             }
             val tokenFromServer = task.result
-            if (token != tokenFromServer) {
-                saveFcmToken(tokenFromServer)
-            }
+            saveFcmToken(tokenFromServer)
+            onComplete(tokenFromServer)
         }
     }
 
-    fun getFcmToken(): String {
+    fun getFcmToken(onComplete: (String) -> Unit) {
         if (currentToken.isNullOrBlank()) {
-            Log.e("getFcmToken", "getFcmToken: token is null!!")
-            return ""
+            refreshToken {
+                onComplete(it)
+            }
         } else {
-            return currentToken!!
+            onComplete(currentToken!!)
         }
     }
 }

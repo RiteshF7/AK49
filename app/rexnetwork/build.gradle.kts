@@ -82,4 +82,10 @@ dependencies {
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // OkHttp logging interceptor
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    // Firebase Performance Monitoring
+    implementation ("com.google.firebase:firebase-perf-ktx:20.5.0")
 }

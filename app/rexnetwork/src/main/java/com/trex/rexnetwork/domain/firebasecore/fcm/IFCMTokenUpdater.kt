@@ -6,6 +6,11 @@ import com.trex.rexnetwork.utils.SharedPreferenceManager
 
 interface IFCMTokenUpdater {
     fun updateFirestoreFCMToken(token: String)
+
+    fun getCurrentFirestoreFCMToken(
+        onSuccess: (String) -> Unit,
+        onFailure: (Exception) -> Unit,
+    )
 }
 
 abstract class FCMTokenUpdater(
