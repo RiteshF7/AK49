@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.os.Parcelable
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -42,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import com.trex.rexnetwork.Constants
 import com.trex.rexnetwork.data.ActionMessageDTO
 import com.trex.rexnetwork.data.Actions
+import com.trex.rexnetwork.data.NewDevice
 import com.trex.rexnetwork.utils.SharedPreferenceManager
 import com.trex.rexnetwork.utils.getExtraData
 import kotlinx.parcelize.Parcelize
@@ -204,18 +209,29 @@ data class ActionResultStatus(
 class FcmResultActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val sharedPreferenceManager = SharedPreferenceManager(this)
 
         // Get parameters from intent
         val result = intent.getExtraData<ActionMessageDTO>()
+        val resultStatus =
+            result.payload[Constants.KEY_RESPOSE_RESULT_STATUS]
         val isSuccess =
-            result.payload[Constants.KEY_RESPOSE_RESULT_STATUS] == Constants.RESPONSE_RESULT_SUCCESS
+            resultStatus == Constants.RESPONSE_RESULT_SUCCESS
         val message: String =
             result.payload[result.action.name] ?: "Action completed successfully!"
 
-        //temp fix for finilize activity //fix this in future
+        // temp fix for finilize activity //fix this in future
         if (result.action == Actions.ACTION_REG_DEVICE) {
-            SharedPreferenceManager(this).saveRegCompleteStatus(isSuccess)
+            if (isSuccess) {
+                val deviceId = result.payload[NewDevice::deviceId.name]
+                deviceId?.let { id ->
+                    sharedPreferenceManager.saveDeviceId(id)
+                }
+            }
+            sharedPreferenceManager.saveRegCompleteStatus(resultStatus ?: "")
+            finish()
         }
+
         setContent {
             MaterialTheme(colorScheme = colors) {
                 Surface(

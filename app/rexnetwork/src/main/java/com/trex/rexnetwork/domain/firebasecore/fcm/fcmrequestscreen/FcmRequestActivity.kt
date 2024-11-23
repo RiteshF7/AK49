@@ -65,11 +65,21 @@ class FcmRequestActivity : ComponentActivity() {
             FcmRequestScreen(
                 viewModel = viewModel,
                 actionMessageDTO = messageData,
-                onComplete = {
-                    finish()
+                onComplete = { result ->
+                    if (result != null) {
+                        setResult(RESULT_OK)
+                        finish()
+                    } else {
+                        setResult(RESULT_CANCELED)
+                        finish()
+                    }
                 },
             )
         }
+    }
+
+    companion object {
+        const val FCM_REQUEST_KEY = 701
     }
 }
 
@@ -77,7 +87,7 @@ class FcmRequestActivity : ComponentActivity() {
 fun FcmRequestScreen(
     viewModel: FcmRequestViewModel,
     actionMessageDTO: ActionMessageDTO,
-    onComplete: () -> Unit,
+    onComplete: (ActionMessageDTO?) -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
@@ -109,12 +119,14 @@ fun FcmRequestScreen(
                 ErrorContent(
                     error = currentState.message,
                     onRetry = { viewModel.sendFcmRequest(actionMessageDTO) },
-                    onCancel = onComplete,
+                    onCancel = {
+                        onComplete(null)
+                    },
                 )
             }
 
             is FcmRequestState.Success -> {
-                onComplete()
+                onComplete(currentState.response)
             }
 
             is FcmRequestState.Timeout -> {
@@ -136,7 +148,7 @@ fun FcmRequestScreen(
                     ),
                 )
             },
-            onCancel = onComplete,
+            onCancel = { onComplete(null) },
         )
     }
 }

@@ -32,6 +32,22 @@ fun <T : Parcelable> Context.startMyActivity(
     this.startActivity(intent)
 }
 
+fun <T : Parcelable> Activity.startMyActivityForResult(
+    activityClass: Class<out Activity>,
+    extraData: T,
+    resultKey: Int,
+    isNewTask: Boolean = false,
+) {
+    val intent =
+        Intent(this, activityClass).apply {
+            putExtra(INTENT_EXTRA_KEY, extraData)
+            if (isNewTask) {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }
+        }
+    this.startActivityForResult(intent, resultKey)
+}
+
 // Overloaded function to start any activity without extra data
 fun Context.startMyActivity(
     activityClass: Class<out Activity>,

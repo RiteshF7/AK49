@@ -11,7 +11,7 @@ class SharedPreferenceManager(
     private val keyIMEI: String = "KEY_IMEI"
     private val keyShopId: String = "KEY_SHOP_ID"
     private val keyDeviceId: String = "KEY_DEVICE_ID"
-    private val keyDeviceRegStatus: String = "KEY_DEVICE_ID"
+    private val keyDeviceRegStatus: String = "KEY_IS_REG_COMPLETED"
     private val sharePrefKey = "${context.packageName}.SHARED_PREF"
     private val sharedPreferences = context.getSharedPreferences(sharePrefKey, Context.MODE_PRIVATE)
 
@@ -73,9 +73,9 @@ class SharedPreferenceManager(
 
     fun getDeviceId() = getString(keyDeviceId)
 
-    fun saveRegCompleteStatus(status: Boolean) {
-        saveBoolean(keyDeviceRegStatus, status)
+    fun saveRegCompleteStatus(status: String) {
+        saveString(keyDeviceRegStatus, status)
     }
 
-    fun getRegCompleteStatus(): Boolean = getBoolean(keyDeviceRegStatus)
+    fun getRegCompleteStatus(): String = getString(keyDeviceRegStatus) ?: ""
 }
