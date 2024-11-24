@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,8 +31,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.trex.rexnetwork.R
 import com.trex.rexnetwork.data.ActionMessageDTO
 import com.trex.rexnetwork.utils.getExtraData
 import java.util.UUID
@@ -59,22 +62,27 @@ class FcmRequestActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        actionBar?.hide()
         messageData = intent.getExtraData<ActionMessageDTO>()
 
         setContent {
-            FcmRequestScreen(
-                viewModel = viewModel,
-                actionMessageDTO = messageData,
-                onComplete = { result ->
-                    if (result != null) {
-                        setResult(RESULT_OK)
-                        finish()
-                    } else {
-                        setResult(RESULT_CANCELED)
-                        finish()
-                    }
-                },
-            )
+            Box(
+                Modifier.background(color = Color.Black.copy(alpha = 0.85f)),
+            ) {
+                FcmRequestScreen(
+                    viewModel = viewModel,
+                    actionMessageDTO = messageData,
+                    onComplete = { result ->
+                        if (result != null) {
+                            setResult(RESULT_OK)
+                            finish()
+                        } else {
+                            setResult(RESULT_CANCELED)
+                            finish()
+                        }
+                    },
+                )
+            }
         }
     }
 
@@ -110,8 +118,8 @@ fun FcmRequestScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp),
                 ) {
-                    CircularProgressIndicator()
-                    Text("Waiting for response...")
+                    CircularProgressIndicator(color = colorResource(R.color.primary))
+                    Text("Please wait...", color = Color.White)
                 }
             }
 
@@ -130,7 +138,8 @@ fun FcmRequestScreen(
             }
 
             is FcmRequestState.Timeout -> {
-                showRetryDialog = true
+//                showRetryDialog = true
+                onComplete(null)
             }
 
             is FcmRequestState.Idle -> {
