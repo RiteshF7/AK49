@@ -1,12 +1,13 @@
 package com.trex.rexnetwork.data
 
+import com.google.firebase.Timestamp
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class NewDevice(
     var shopId: String,
     var fcmToken: String,
-    var deviceId:String="",
+    var deviceId: String = "",
     var imeiOne: String = "",
     val manufacturer: String = "",
     val brand: String = "",
@@ -24,6 +25,7 @@ data class NewDevice(
     val isCameraLocked: Boolean = false,
     val isCallLocked: Boolean = false,
     val unlockCode: String = "000000",
+    val createdAt: Timestamp = Timestamp.now(),
 ) : BaseFirestoreResponse {
     constructor() : this("", "")
 }

@@ -94,4 +94,6 @@ dependencies {
 
     // Firebase Performance Monitoring
     implementation("com.google.firebase:firebase-perf-ktx:20.5.0")
+    implementation("androidx.work:work-runtime-ktx:2.9.1")
+
 }
