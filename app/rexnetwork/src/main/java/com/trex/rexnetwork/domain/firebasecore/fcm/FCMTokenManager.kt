@@ -23,7 +23,7 @@ class FCMTokenManager(
 
     fun refreshToken(onComplete: (String) -> Unit) {
         // Then attempt to get FCM token
-        getFCMToken(context = context) { result ->
+        getFCMToken() { result ->
             result.fold(
                 onSuccess = { token ->
                     saveFcmToken(token)
@@ -36,10 +36,25 @@ class FCMTokenManager(
         }
     }
 
-    private fun getFCMToken(
-        context: Context,
-        callback: (Result<String>) -> Unit,
+    fun checkAndRefreshToken(
+        onComplete: (String) -> Unit,
+        onFailure: () -> Unit,
     ) {
+        // Then attempt to get FCM token
+        getFCMToken { result ->
+            result.fold(
+                onSuccess = { token ->
+                    saveFcmToken(token)
+                    onComplete(token)
+                },
+                onFailure = { exception ->
+                    Log.e("FCM", "Failed to get token", exception)
+                },
+            )
+        }
+    }
+
+    fun getFCMToken(callback: (Result<String>) -> Unit) {
         try {
             FirebaseMessaging
                 .getInstance()
@@ -84,7 +99,7 @@ class FCMTokenManager(
     ) {
         // Retry with delay
         Handler(Looper.getMainLooper()).postDelayed({
-            getFCMToken(context, callback)
+            getFCMToken( callback)
         }, 5000)
     }
 }
