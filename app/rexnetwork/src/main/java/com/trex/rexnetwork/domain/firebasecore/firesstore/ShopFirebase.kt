@@ -11,6 +11,7 @@ data class Shop(
     val ownerName: String = "",
     val shopCode: String = Random.nextInt(1, 100000).toString(),
     val fcmToken: String = "",
+    val shopPhoneNumber: String = "",
     val tokenBalance: List<String> = listOf(),
 ) : BaseFirestoreResponse
 
