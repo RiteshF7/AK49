@@ -12,6 +12,7 @@ class SharedPreferenceManager(
     private val keyShopId: String = "KEY_SHOP_ID"
     private val keyDeviceId: String = "KEY_DEVICE_ID"
     private val keyDeviceRegStatus: String = "KEY_IS_REG_COMPLETED"
+    private val keyMasterUnlockCode: String = "KEY_MASTER_UNLOCK_CODE"
     private val sharePrefKey = "${context.packageName}.SHARED_PREF"
     private val sharedPreferences = context.getSharedPreferences(sharePrefKey, Context.MODE_PRIVATE)
 
@@ -76,6 +77,12 @@ class SharedPreferenceManager(
     fun saveRegCompleteStatus(status: String) {
         saveString(keyDeviceRegStatus, status)
     }
+
+    fun setMasterUnlockCode(code: String) {
+        saveString(keyMasterUnlockCode, code)
+    }
+
+    fun getMasterUnlockCode(): String = getString(keyMasterUnlockCode) ?: ""
 
     fun getRegCompleteStatus(): String = getString(keyDeviceRegStatus) ?: ""
 }

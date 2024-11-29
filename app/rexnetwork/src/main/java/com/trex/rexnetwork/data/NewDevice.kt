@@ -2,6 +2,7 @@ package com.trex.rexnetwork.data
 
 import com.google.firebase.Timestamp
 import kotlinx.android.parcel.Parcelize
+import kotlin.random.Random
 
 @Parcelize
 data class NewDevice(
@@ -24,7 +25,8 @@ data class NewDevice(
     val isDeviceLocked: Boolean = false,
     val isCameraLocked: Boolean = false,
     val isCallLocked: Boolean = false,
-    val unlockCode: String = "000000",
+    val masterCode: String = Random.nextInt(1, 100000).toString(),
+    val unlockCode: String = Random.nextInt(1, 100000).toString(),
     val createdAt: Timestamp = Timestamp.now(),
 ) : BaseFirestoreResponse {
     constructor() : this("", "")

@@ -49,6 +49,18 @@ interface RexKtorServer {
         @Query("shopId") shopId: String,
         @Query("deviceId") deviceId: String,
     ): Response<Boolean>
+
+    @GET("/updateMasterCode")
+    suspend fun updateMasterCode(
+        @Query("shopId") shopId: String,
+        @Query("deviceId") deviceId: String,
+    ): Response<String>
+
+    @GET("/getUnlockCode")
+    suspend fun getUnlockCode(
+        @Query("shopId") shopId: String,
+        @Query("deviceId") deviceId: String,
+    ): Response<String>
 }
 
 // Custom logging interceptor
