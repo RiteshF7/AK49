@@ -8,6 +8,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.trex.rexnetwork.Constants.BASE_URL
 import com.trex.rexnetwork.data.ActionMessageDTO
 import com.trex.rexnetwork.data.UpdateTokenRequest
+import com.trex.rexnetwork.domain.repositories.DeviceRegistration
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -37,6 +38,16 @@ interface RexKtorServer {
     suspend fun sendOnlineMessage(
         @Body body: ActionMessageDTO,
     ): Response<Unit>
+
+    @POST("/presence/start")
+    suspend fun startPresenceMonitoring(
+        @Body body: DeviceRegistration,
+    ): Response<Map<String, String>>
+
+    @POST("/presence/stop")
+    suspend fun stopPresenceMonitoring(
+        @Query("deviceId") deviceId: String,
+    ): Response<Map<String, String>>
 
     @POST("/updateDeviceFcmToken")
     suspend fun updateFcmToken(
