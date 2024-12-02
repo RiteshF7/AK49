@@ -22,9 +22,10 @@ class MainActivity : ComponentActivity() {
             RexNetworkTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(
-                        modifier = Modifier
-                            .padding(innerPadding)
-                            .background(color = Color.Black.copy(alpha = 0.85f))
+                        modifier =
+                            Modifier
+                                .padding(innerPadding)
+                                .background(color = Color.Black.copy(alpha = 0.85f)),
                     ) {
                         Box(modifier = Modifier.padding(10.dp)) {
                             ActionGrid()
@@ -34,5 +35,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
 }

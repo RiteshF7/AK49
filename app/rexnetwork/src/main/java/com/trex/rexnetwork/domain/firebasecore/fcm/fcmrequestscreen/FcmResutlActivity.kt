@@ -47,6 +47,8 @@ import com.trex.rexnetwork.Constants
 import com.trex.rexnetwork.data.ActionMessageDTO
 import com.trex.rexnetwork.data.Actions
 import com.trex.rexnetwork.data.NewDevice
+import com.trex.rexnetwork.domain.repositories.DevicePresenceRepo
+import com.trex.rexnetwork.domain.repositories.DeviceRegistration
 import com.trex.rexnetwork.utils.SharedPreferenceManager
 import com.trex.rexnetwork.utils.getExtraData
 import kotlinx.parcelize.Parcelize
@@ -226,6 +228,10 @@ class FcmResultActivity : ComponentActivity() {
                 val deviceId = result.payload[NewDevice::deviceId.name]
                 deviceId?.let { id ->
                     sharedPreferenceManager.saveDeviceId(id)
+                    sharedPreferenceManager.getShopId()?.let { shopId ->
+                        val deviceRegistration = DeviceRegistration(id, shopId)
+                        DevicePresenceRepo().registerPresenceMonitoring(deviceRegistration)
+                    }
                 }
             }
             sharedPreferenceManager.saveRegCompleteStatus(resultStatus ?: "")

@@ -25,6 +25,7 @@ data class NewDevice(
     val isDeviceLocked: Boolean = false,
     val isCameraLocked: Boolean = false,
     val isCallLocked: Boolean = false,
+    val isOnline: Boolean = false,
     val masterCode: String = Random.nextInt(1, 100000).toString(),
     val unlockCode: String = Random.nextInt(1, 100000).toString(),
     val createdAt: Timestamp = Timestamp.now(),

@@ -1,6 +1,5 @@
 package com.trex.rexnetwork
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -31,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-
 @Preview
 @Composable
 fun preview() {
@@ -43,7 +41,7 @@ fun ActionGrid() {
     val list = listOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5)
     LazyVerticalGrid(
         columns = GridCells.Fixed(3),
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
     ) {
         items(list) { item ->
             ActionCard()
@@ -54,20 +52,20 @@ fun ActionGrid() {
 @Composable
 fun ActionCard() {
     Card(
-        modifier = Modifier
-            .padding(6.dp),
+        modifier =
+            Modifier
+                .padding(6.dp),
         shape = RoundedCornerShape(6.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.White.copy(alpha = 0.1f),
-        ),
-
-        ) {
+        colors =
+            CardDefaults.cardColors(
+                containerColor = Color.White.copy(alpha = 0.1f),
+            ),
+    ) {
         Column(
-            modifier = Modifier
-                .padding(20.dp)
-                .wrapContentWidth(Alignment.CenterHorizontally)
-            ,
-
+            modifier =
+                Modifier
+                    .padding(20.dp)
+                    .wrapContentWidth(Alignment.CenterHorizontally),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             RoundShadowIcon(Icons.Rounded.Add)
@@ -79,7 +77,7 @@ fun ActionCard() {
                 fontFamily = FontFamily.Monospace,
                 fontWeight = FontWeight.Bold,
                 softWrap = true,
-                color = Color.White
+                color = Color.White,
             )
         }
     }
@@ -90,17 +88,19 @@ fun RoundShadowIcon(icon: ImageVector) {
     val mPrimaryColor = colorResource(R.color.primary)
     Card(
         shape = RoundedCornerShape(60.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = mPrimaryColor.copy(alpha = 0.1f),
-        ),
+        colors =
+            CardDefaults.cardColors(
+                containerColor = mPrimaryColor.copy(alpha = 0.1f),
+            ),
     ) {
         Icon(
-            modifier = Modifier
-                .height(40.dp)
-                .width(40.dp),
+            modifier =
+                Modifier
+                    .height(40.dp)
+                    .width(40.dp),
             imageVector = icon,
             tint = mPrimaryColor,
-            contentDescription = ""
+            contentDescription = "",
         )
     }
 }
