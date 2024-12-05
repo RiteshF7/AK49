@@ -23,7 +23,7 @@ class FCMTokenManager(
 
     fun refreshToken(onComplete: (String) -> Unit) {
         // Then attempt to get FCM token
-        getFCMToken() { result ->
+        getFCMToken { result ->
             result.fold(
                 onSuccess = { token ->
                     saveFcmToken(token)
@@ -99,7 +99,7 @@ class FCMTokenManager(
     ) {
         // Retry with delay
         Handler(Looper.getMainLooper()).postDelayed({
-            getFCMToken( callback)
+            getFCMToken(callback)
         }, 5000)
     }
 }

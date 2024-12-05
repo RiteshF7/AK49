@@ -50,6 +50,16 @@ class SharedPreferenceManager(
 
     fun prefContains(key: String): Boolean = sharedPreferences.contains(key)
 
+    fun clearPreference(onComplete: (Boolean) -> Unit) {
+        sharedPreferences
+            .edit()
+            .clear()
+            .commit()
+            .apply {
+                onComplete(true)
+            }
+    }
+
     fun saveFcmToken(fcmToken: String) {
         saveString(keyFCMToken, fcmToken)
     }
