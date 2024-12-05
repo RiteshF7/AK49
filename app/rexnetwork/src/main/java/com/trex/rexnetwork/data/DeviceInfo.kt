@@ -5,6 +5,5 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class DeviceInfo(
-    val fcmToken: String,
-    val deviceModel: String,
+    val deviceId: String,
 ) : Parcelable

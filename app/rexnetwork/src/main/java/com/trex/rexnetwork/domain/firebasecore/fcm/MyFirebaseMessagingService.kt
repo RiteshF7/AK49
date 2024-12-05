@@ -16,10 +16,12 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.trex.rexnetwork.Constants
+import com.trex.rexnetwork.utils.SharedPreferenceManager
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     private lateinit var fcmTokenManager: FCMTokenManager
     private lateinit var updater: IFCMTokenUpdater
+    private lateinit var sharedPrefManager: SharedPreferenceManager
 
     override fun onCreate() {
         super.onCreate()
@@ -29,6 +31,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             } else {
                 ShopFcmTokenUpdater(applicationContext)
             }
+        sharedPrefManager = SharedPreferenceManager(applicationContext)
         fcmTokenManager = FCMTokenManager(applicationContext, updater)
     }
 
@@ -88,6 +91,17 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         fcmTokenManager.saveFcmToken(token)
+        if (packageName == "com.trex.rexandroidsecureclient") {
+            sharedPrefManager.getShopId()?.let { shopId ->
+                sharedPrefManager.getDeviceId()?.let { deviceId ->
+                    fcmTokenManager.refreshToken { }
+                }
+            }
+        } else {
+            sharedPrefManager.getShopId()?.let {
+                fcmTokenManager.refreshToken { }
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

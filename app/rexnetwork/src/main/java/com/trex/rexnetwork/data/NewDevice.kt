@@ -6,8 +6,8 @@ import kotlin.random.Random
 
 @Parcelize
 data class NewDevice(
-    var shopId: String,
-    var fcmToken: String,
+    var shopId: String = "",
+    var fcmToken: String = "",
     var deviceId: String = "",
     var imeiOne: String = "",
     val manufacturer: String = "",
@@ -29,6 +29,4 @@ data class NewDevice(
     val masterCode: String = Random.nextInt(1, 100000).toString(),
     val unlockCode: String = Random.nextInt(1, 100000).toString(),
     val createdAt: Timestamp = Timestamp.now(),
-) : BaseFirestoreResponse {
-    constructor() : this("", "")
-}
+) : BaseFirestoreResponse
