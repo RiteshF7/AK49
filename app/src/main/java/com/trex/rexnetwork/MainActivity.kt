@@ -1,7 +1,5 @@
 package com.trex.rexnetwork
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,10 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.trex.rexnetwork.domain.firebasecore.firesstore.DeviceFirestore
 import com.trex.rexnetwork.ui.theme.RexNetworkTheme
-import com.trex.rexnetwork.utils.SharedPreferenceManager
-import com.trex.rexnetwork.utils.startMyActivity
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +36,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-
 }
