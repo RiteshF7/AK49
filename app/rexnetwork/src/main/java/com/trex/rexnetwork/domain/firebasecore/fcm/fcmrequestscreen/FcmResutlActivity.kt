@@ -45,10 +45,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trex.rexnetwork.Constants
 import com.trex.rexnetwork.data.ActionMessageDTO
-import com.trex.rexnetwork.data.Actions
-import com.trex.rexnetwork.data.NewDevice
-import com.trex.rexnetwork.domain.repositories.DevicePresenceRepo
-import com.trex.rexnetwork.domain.repositories.DeviceRegistration
 import com.trex.rexnetwork.utils.SharedPreferenceManager
 import com.trex.rexnetwork.utils.getExtraData
 import kotlinx.parcelize.Parcelize
@@ -221,22 +217,6 @@ class FcmResultActivity : ComponentActivity() {
             resultStatus == Constants.RESPONSE_RESULT_SUCCESS
         val message: String =
             result.payload[result.action.name] ?: "Action completed successfully!"
-
-        // temp fix for finilize activity //fix this in future
-        if (result.action == Actions.ACTION_REG_DEVICE) {
-            if (isSuccess) {
-                val deviceId = result.payload[NewDevice::deviceId.name]
-                deviceId?.let { id ->
-                    sharedPreferenceManager.saveDeviceId(id)
-                    sharedPreferenceManager.getShopId()?.let { shopId ->
-                        val deviceRegistration = DeviceRegistration(id, shopId)
-                        DevicePresenceRepo().registerPresenceMonitoring(deviceRegistration)
-                    }
-                }
-            }
-            sharedPreferenceManager.saveRegCompleteStatus(resultStatus ?: "")
-            finish()
-        }
 
         setContent {
             MaterialTheme(colorScheme = colors) {
