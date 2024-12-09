@@ -231,7 +231,6 @@ class FcmResultActivity : ComponentActivity() {
                     sharedPreferenceManager.getShopId()?.let { shopId ->
                         val deviceRegistration = DeviceRegistration(id, shopId)
                         DevicePresenceRepo().registerPresenceMonitoring(deviceRegistration)
-                        PermissionHandlerActivity.go(this)
                     }
                 }
             }
