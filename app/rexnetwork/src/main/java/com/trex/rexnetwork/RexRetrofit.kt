@@ -54,6 +54,10 @@ interface RexKtorServer {
         @Body body: UpdateTokenRequest,
     ): Response<Unit>
 
+    data class FileUrlResponse(val url: String)
+    @GET("/api/apk/url")
+    suspend fun getRascApkUrl(): Response<FileUrlResponse>
+
     @GET("/verifycode")
     suspend fun verifyCode(
         @Query("code") code: String,

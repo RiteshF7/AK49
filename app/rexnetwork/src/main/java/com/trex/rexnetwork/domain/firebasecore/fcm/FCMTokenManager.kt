@@ -26,6 +26,7 @@ class FCMTokenManager(
         getFCMToken { result ->
             result.fold(
                 onSuccess = { token ->
+                    Log.i("FCM TOKEN ::", "refreshToken: $token")
                     saveFcmToken(token)
                     onComplete(token)
                 },
