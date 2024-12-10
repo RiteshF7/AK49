@@ -1,6 +1,6 @@
 package com.trex.rexnetwork.domain.repositories
 
-import com.trex.rexnetwork.data.NewDevice
+import android.util.Log
 import com.trex.rexnetwork.domain.firebasecore.firesstore.DeletedDeviceFirebase
 import com.trex.rexnetwork.domain.firebasecore.firesstore.DeviceFirestore
 import kotlinx.coroutines.CoroutineScope
@@ -14,18 +14,23 @@ class DeleteDeviceRepo(
     private val deletedDeviceFirebase = DeletedDeviceFirebase(shopId)
 
     fun deleteDevice(
-        device: NewDevice,
+        deviceId: String,
         onSuccess: (Boolean) -> Unit,
     ) {
         CoroutineScope(Dispatchers.IO).launch {
-            deletedDeviceFirebase.createOrUpdateDevice(device.deviceId, device, {
-                deviceFirebase.deleteDevice(device.deviceId, {
-                    onSuccess(true)
+            deviceFirebase.getSingleDevice(deviceId, { device ->
+
+                deletedDeviceFirebase.createOrUpdateDevice(device.deviceId, device, {
+                    deviceFirebase.deleteDevice(device.deviceId, {
+                        onSuccess(true)
+                    }, {
+                        onSuccess(false)
+                    })
                 }, {
                     onSuccess(false)
                 })
             }, {
-                onSuccess(false)
+                Log.e("", "deleteDevice: Failed to add device to deleted list!")
             })
         }
     }

@@ -2,6 +2,7 @@ package com.trex.rexnetwork.domain.firebasecore.fcm.fcmrequestscreen
 
 import android.os.Bundle
 import android.os.Parcelable
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.core.RepeatMode
@@ -45,6 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trex.rexnetwork.Constants
 import com.trex.rexnetwork.data.ActionMessageDTO
+import com.trex.rexnetwork.data.Actions
+import com.trex.rexnetwork.domain.repositories.DeleteDeviceRepo
 import com.trex.rexnetwork.utils.SharedPreferenceManager
 import com.trex.rexnetwork.utils.getExtraData
 import kotlinx.parcelize.Parcelize
@@ -218,6 +221,16 @@ class FcmResultActivity : ComponentActivity() {
         val message: String =
             result.payload[result.action.name] ?: "Action completed successfully!"
 
+        if (result.action == Actions.ACTION_REMOVE_DEVICE) {
+            if (isSuccess) {
+                sharedPreferenceManager.getShopId()?.let { shopId ->
+                    val deleteDeviceRepo = DeleteDeviceRepo(shopId)
+                    deleteDeviceRepo.deleteDevice(message) {
+                        Log.e("Device deleted!!", "onCreate: a")
+                    }
+                }
+            }
+        }
         setContent {
             MaterialTheme(colorScheme = colors) {
                 Surface(
