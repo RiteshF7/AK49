@@ -5,9 +5,11 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FirestoreExtraData(
-    val url: String="",
-    val checksum: String="",
+    val url: String = "",
+    val checksum: String = "",
+    val debug_checksum: String = "",
 ) : BaseFirestoreResponse
+
 class DataFirestore : FirestoreBase<FirestoreExtraData>("data") {
     override fun dataClass(): Class<FirestoreExtraData> = FirestoreExtraData::class.java
 

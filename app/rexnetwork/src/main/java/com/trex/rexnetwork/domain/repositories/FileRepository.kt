@@ -5,4 +5,5 @@ import retrofit2.Response
 
 class FileRepository : BaseRepository() {
     suspend fun getRascFileUrl(): Response<RexKtorServer.FileUrlResponse> = apiService.getRascApkUrl()
+    suspend fun getDebugRascFileUrl(): Response<RexKtorServer.FileUrlResponse> = apiService.getDebugRascApkUrl()
 }

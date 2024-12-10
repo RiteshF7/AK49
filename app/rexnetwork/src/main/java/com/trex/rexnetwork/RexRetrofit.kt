@@ -58,6 +58,9 @@ interface RexKtorServer {
     @GET("/api/apk/url")
     suspend fun getRascApkUrl(): Response<FileUrlResponse>
 
+    @GET("/api/debug/apk/url")
+    suspend fun getDebugRascApkUrl(): Response<FileUrlResponse>
+
     @GET("/verifycode")
     suspend fun verifyCode(
         @Query("code") code: String,
