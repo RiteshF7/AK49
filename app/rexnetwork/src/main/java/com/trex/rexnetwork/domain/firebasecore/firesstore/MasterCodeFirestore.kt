@@ -36,6 +36,8 @@ class MasterCodeFirestore : FirestoreBase<MasterCode>("mastercode") {
         })
     }
 
+
+
     fun genrateInitialData() {
         CoroutineScope(Dispatchers.IO).launch {
             for (action in Actions.values()) {
