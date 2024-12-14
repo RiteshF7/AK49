@@ -143,7 +143,7 @@ fun FcmRequestScreen(
                 Toast
                     .makeText(
                         context,
-                        "You will be notified when device is locked!",
+                        "You will be notified when operation is completed!",
                         Toast.LENGTH_SHORT,
                     ).show()
                 onComplete(null)

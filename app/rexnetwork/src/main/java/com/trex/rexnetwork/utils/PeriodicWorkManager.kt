@@ -45,7 +45,7 @@ class PeriodicWorkManager(
 
             val periodicWorkRequest =
                 PeriodicWorkRequestBuilder<PeriodicWorkManager>(
-                    6,
+                    1,
                     TimeUnit.HOURS, // Repeat interval
                     15,
                     TimeUnit.MINUTES, // Flex interval

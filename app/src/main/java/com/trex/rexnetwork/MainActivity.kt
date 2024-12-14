@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
-import com.trex.rexnetwork.domain.firebasecore.firesstore.MasterCodeFirestore
 import com.trex.rexnetwork.ui.theme.RexNetworkTheme
 
 class MainActivity : ComponentActivity() {

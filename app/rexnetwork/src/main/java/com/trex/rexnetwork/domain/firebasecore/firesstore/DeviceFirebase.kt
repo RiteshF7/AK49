@@ -33,7 +33,7 @@ class DeviceFirestore(
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit,
     ) {
-        updateSingleField(deviceId, "lockStatus", lockStatus, onSuccess, onFailure)
+        updateSingleField(deviceId, NewDevice::deviceLockStatus.name, lockStatus, onSuccess, onFailure)
     }
 
     // Delete a device
