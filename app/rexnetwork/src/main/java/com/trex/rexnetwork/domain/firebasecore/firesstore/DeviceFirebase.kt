@@ -17,10 +17,19 @@ class DeviceFirestore(
         addOrUpdateDocument(deviceId, device, onSuccess, onFailure)
     }
 
+    fun updateDueDate(
+        deviceId: String,
+        newDueDate: String,
+        onSuccess: () -> Unit,
+        onFailure: (Exception) -> Unit,
+    ) {
+        updateSingleField(deviceId, NewDevice::dueDate.name, newDueDate, onSuccess, onFailure)
+    }
+
     // Update lock status of a device
     fun updateLockStatus(
         deviceId: String,
-        lockStatus: String,
+        lockStatus: Boolean,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit,
     ) {

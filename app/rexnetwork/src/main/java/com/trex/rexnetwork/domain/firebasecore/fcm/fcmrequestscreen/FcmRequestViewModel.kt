@@ -5,13 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trex.rexnetwork.Constants
 import com.trex.rexnetwork.data.ActionMessageDTO
-import com.trex.rexnetwork.data.Actions
 import com.trex.rexnetwork.domain.repositories.SendActionMessageRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
 // ViewModel to handle business logic
@@ -25,9 +23,6 @@ class FcmRequestViewModel : ViewModel() {
     private var timer: CountDownTimer? = null
 
     fun sendFcmRequest(actionMessageDTO: ActionMessageDTO) {
-        if (actionMessageDTO.action == Actions.ACTION_REG_DEVICE) {
-            timeoutDuration = 10.minutes
-        }
         viewModelScope.launch {
             try {
                 _state.value = FcmRequestState.Loading

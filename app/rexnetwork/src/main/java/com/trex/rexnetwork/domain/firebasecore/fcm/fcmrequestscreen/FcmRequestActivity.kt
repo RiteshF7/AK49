@@ -1,6 +1,7 @@
 package com.trex.rexnetwork.domain.firebasecore.fcm.fcmrequestscreen
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -139,6 +140,12 @@ fun FcmRequestScreen(
 
             is FcmRequestState.Timeout -> {
 //                showRetryDialog = true
+                Toast
+                    .makeText(
+                        context,
+                        "You will be notified when device is locked!",
+                        Toast.LENGTH_SHORT,
+                    ).show()
                 onComplete(null)
             }
 
